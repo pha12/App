@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ChatWindow from "./ChatWindow"; // Assurez-vous de bien importer ChatWindow
+import ChatComponent from "./ChatComponent"; // Import ChatComponent
 import "../App.css";
 
 const ProfileHeader = ({ userProfile = {}, isCurrentUser, onProfileUpdate }) => {
@@ -145,11 +145,7 @@ const ProfileHeader = ({ userProfile = {}, isCurrentUser, onProfileUpdate }) => 
                 )}
 
                 {showChat && (
-                    <ChatWindow
-                        currentUser={profileData.name}
-                        otherUser="Autre Utilisateur"  // Remplacez par le nom réel de l'autre utilisateur
-                        onClose={() => setShowChat(false)}
-                    />
+                    <ChatComponent isCurrentUser={profileData.name} /> // Pass the current user name to the ChatComponent
                 )}
             </div>
 
@@ -165,3 +161,4 @@ const ProfileHeader = ({ userProfile = {}, isCurrentUser, onProfileUpdate }) => 
 };
 
 export default ProfileHeader;
+

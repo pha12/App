@@ -1,5 +1,5 @@
 import React, { useReducer, useState, createContext } from "react";
-import Header from "./components/Header";
+import Header from "./components/Header"; // Ensure correct path
 import ProfileHeader from "./components/ProfileHeader";
 import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
@@ -8,7 +8,6 @@ import Register from "./components/Register";
 import Logout from "./components/Logout";
 import CreatePageOrGroup from "./pages/CreatePageOrGroup";
 import PagesAndGroupsList from "./pages/PagesAndGroupsList";
-import PageOrGroupView from "./pages/PageOrGroupView";
 
 export const UserContext = createContext();
 
@@ -62,11 +61,6 @@ const App = () => {
     const handleProfileUpdate = (field, value) => dispatch({ type: "UPDATE_PROFILE", field, value });
 
     const addPost = (content, mediaFile) => {
-        if (!content && !mediaFile) {
-            alert("Veuillez ajouter du contenu avant de publier !");
-            return;
-        }
-
         const newPost = {
             id: Date.now(),
             content,
@@ -77,6 +71,14 @@ const App = () => {
             postOwner: state.user,
         };
         setPosts((prevPosts) => [newPost, ...prevPosts]);
+    };
+
+    const likePost = (postId) => {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.id === postId ? { ...post, likes: post.likes + 1 } : post
+            )
+        );
     };
 
     const addComment = (postId, comment) => {
@@ -112,12 +114,12 @@ const App = () => {
                         </div>
                     ) : (
                         <>
-                            <CreatePost user={state.user} addPost={addPost} />
+                            <CreatePost addPost={addPost} />
                             <PostList
                                 posts={posts}
-                                currentUser={state.user}
-                                likePost={() => {}}
+                                likePost={likePost}
                                 addComment={addComment}
+                                currentUser={state.user}
                             />
                         </>
                     )}
